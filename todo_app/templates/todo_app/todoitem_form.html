@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="card p-4 shadow rounded-4"
+         style="max-width: 480px; width: 100%;
+                background: linear-gradient(135deg, #f7f5ff, #e6e2f5);">
+
+        <h3 class="text-center fw-semibold mb-4"
+            style="color: #2f2a4a;">
+            {{ title }}
+        </h3>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ field.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit"
+                        class="btn px-4 rounded-pill"
+                        style="background-color: #c9c1f2; color: #2f2a4a;">
+                    Save
+                </button>
+
+                <a href="{% url 'list' todo_list.id %}"
+                   class="btn px-4 rounded-pill"
+                   style="background-color: #f3e8f3; color: #2f2a4a;">
+                    Cancel
+                </a>
+
+                {% if object %}
+                    <a href="{% url 'item-delete' todo_list.id object.id %}"
+                       class="btn px-4 rounded-pill"
+                       style="background-color: #f8d7da; color: #721c24;">
+                        Delete
+                    </a>
+                {% endif %}
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

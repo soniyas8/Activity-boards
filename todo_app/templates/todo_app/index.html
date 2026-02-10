@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if object_list %}
+  <div class="text-center mb-5">
+    <h2 class="fw-bold" style="font-family: 'Segoe UI', sans-serif; color: #4a4e69;">Activites</h2>
+    <p style="color: #9a8c98;">Organize your tasks and keep your day calm and smooth</p>
+  </div>
+
+  <div class="row g-4 justify-content-center">
+    {% for todolist in object_list %}
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div
+          class="card h-100 shadow-sm rounded-4"
+          style="background: linear-gradient(135deg, #f8f4fc 0%, #e0def8 100%);
+                 cursor: pointer;
+                 transition: transform 0.2s, box-shadow 0.2s;"
+          role="button"
+          onclick="location.href='{% url 'list' todolist.id %}'"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.1)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.05)';"
+        >
+          <div class="card-body d-flex flex-column justify-content-start align-items-start p-4">
+            <h5 class="card-title text-center w-100" style="font-family: 'Poppins', sans-serif; color: #22223b; font-weight: 600;">
+              {{ todolist.title }}
+            </h5>
+
+            {% with todolist.todoitem_set.all|slice:":3" as items %}
+              {% if items %}
+                <ul class="list-unstyled mt-3 w-100">
+                  {% for item in items %}
+                    <li style="padding: 6px 0; font-size: 0.9rem; color: #4a4e69;">
+                      {% if item.completed %}
+                        ✅
+                      {% else %}
+                        ⬜
+                      {% endif %}
+                      {{ item.title }} 
+                      <small style="color: #9a8c98;">(Due {{ item.due_date|date:"M d" }})</small>
+                    </li>
+                  {% endfor %}
+                </ul>
+                {% if todolist.todoitem_set.count > 3 %}
+                  <small style="color: #9a8c98;">…and more</small>
+                {% endif %}
+              {% else %}
+                <small style="color: #9a8c98;">No tasks yet</small>
+              {% endif %}
+            {% endwith %}
+            
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+{% else %}
+  <div class="alert text-center shadow-sm w-100" style="background-color: #f3f0f8; color: #9a8c98; border-radius: 15px; padding: 2rem;">
+    <h4>No boards yet 😌</h4>
+    <p>Start by creating a calm and organized space for your tasks.</p>
+  </div>
+{% endif %}
+
+<div class="text-center mt-5">
+  <button
+    type="button"
+    class="btn shadow rounded-pill px-4 py-2"
+    style="background-color: #c9c1f2; color: #22223b; border: none; font-weight: 500;"
+    onclick="location.href='{% url "list-add" %}'"
+  >
+    + Create a New Board
+  </button>
+</div>
+
+{% endblock %}

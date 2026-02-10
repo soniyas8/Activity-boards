@@ -1,0 +1,35 @@
+<!-- todo_list/todo_app/templates/todo_app/todolist_form.html -->
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container py-5 d-flex justify-content-center">
+  <div class="card shadow-sm p-4" style="max-width: 500px; width: 100%;">
+    <!-- Page Title -->
+    <h3 class="text-center mb-4 fw-bold">{{ title }}</h3>
+
+    <!-- Form -->
+    <form method="post">
+      {% csrf_token %}
+      
+      <!-- Render form fields nicely -->
+      <div class="mb-3">
+        {{ form.as_p }}
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex justify-content-between mt-3">
+        <button type="submit" class="btn px-4 py-2 shadow"
+                style="background-color: #a8dadc; color: #1d3557; border: none;">
+           Save
+        </button>
+        <button type="button" class="btn px-4 py-2 shadow"
+                style="background-color: #f08080; color: white; border: none;"
+                onclick="location.href='{% url "index" %}'">
+          ✖ Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
